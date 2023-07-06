@@ -20,12 +20,12 @@ router.get('/product/:id', (req, res) => {
   });
 });
 
-router.post('/product/', upload.single('image'), (req, res) => {
+router.post('/product/', upload.fields([{name: 'image', maxCount: 1}]), (req, res) => {
   const {name, price, stock, status} = req.body;
-  const {image} = req.file;
-  // console.log(req.file);
+  const image = req.files['image'][0];
+  console.log(image);
   if (image) {
-    const target = path.join(__dirname, 'public', image.originalname);
+    const target = path.join(__dirname, 'uploads', image.originalname);
     fs.renameSync(image.path, target);
     // res.json({
     //   name,
@@ -34,7 +34,12 @@ router.post('/product/', upload.single('image'), (req, res) => {
     //   status,
     //   image
     // });
-    res.sendFile(target);
+    console.log(target);
+    res.json(target);
+  } else {
+    res.json({
+      message: 'Failed'
+    })
   }
 });
 

@@ -10,8 +10,7 @@ app.use(express.urlencoded({extended: true}))
 
 // Mengatasi static
 app.use(express.json());
-app.use('/public', express.static(path.join(__dirname, 'uploads')))
-
+app.use('/uploads', express.static('public'))
 app.use(router);
 
 // Menagatasi error 404
